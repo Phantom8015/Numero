@@ -4,6 +4,7 @@ const client = new Discord.Client();
 const moment = require('moment');
 const dwf = require('dirtywords_filter');
 const AI = require('stable-diffusion-cjs')
+const fetch = require('node-fetch')
 let difficulty = {};
 let gameStart = {}
 let number = {}
@@ -705,8 +706,6 @@ client.on('message', async (message) => {
           await message.channel.send("Your phrase is too long! Please use a shorter one.");
           return;
         } else {
-          const fetch = require('node-fetch')
-
           async function query(data) {
             const response = await fetch(
               "https://api-inference.huggingface.co/models/gpt2",
