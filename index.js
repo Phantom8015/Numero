@@ -720,7 +720,13 @@ client.on('message', async (message) => {
           }
 
           query({"inputs": phrase}).then((response) => {
-            console.log(JSON.stringify(response));
+            const embed = new Discord.MessageEmbed()
+              .setTitle("AI Response")
+              .setColor("#FFFFFF")
+              .addField("Input", phrase)
+              .setDescription(JSON.stringify(response))
+              .setFooter("AI");
+            message.channel.send(embed);
           });
         }
       }
