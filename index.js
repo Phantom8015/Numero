@@ -676,7 +676,7 @@ client.on('message', async (message) => {
         } else {
           async function query(data) {
             const response = await fetch(
-              "https://api-inference.huggingface.co/models/gpt2",
+              "https://api-inference.huggingface.co/models/gpt2-xl",
               {
                 headers: { Authorization: "Bearer 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" },
                 method: "POST",
