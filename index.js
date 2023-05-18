@@ -373,7 +373,7 @@ client.on('message', async (message) => {
   if (message.author.bot) return;
   if (message.channel.type == "dm") return;
   if (message.content.toLowerCase().startsWith(prefix + 'pushupdate') || message.content.toLowerCase().startsWith('/pushupdate')) {
-    if (message.author.id == "792509241901842523") {
+    if (message.author.id == "792509241901842523", "1108626644249354240") {
       try {
         message.channel.send("What is the title of the update?");
         const title = await message.channel.awaitMessages(m => m.author.id == message.author.id, {
