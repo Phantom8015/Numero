@@ -670,6 +670,7 @@ client.on('message', async (message) => {
       .setColor("#FFFFFF")
       .setDescription("All usable commands")
       .addField(prefix + "help", "Shows this message")
+      .addField(prefix + "continue", "Continues a phrase using AI")
       .addField(prefix + "generate", "Generates an image based off of a prompt.")
       .addField(prefix + "start <difficulty>", "Starts the game")
       .addField(prefix + "guess <number>", "Guesses the number")
@@ -688,6 +689,47 @@ client.on('message', async (message) => {
   }
 });
 
+client.on('message', async (message) => {
+  if (message.channel.type == "dm") return;
+  if (message.author.bot) return;
+  if (message.content.toLowerCase().startsWith(prefix + 'continue') || message.content.toLowerCase().startsWith('/continue')) {
+    let args = message.content.toLowerCase().split(" ").slice(1);
+    try {
+      if (args.length == 0) {
+        await message.channel.send("Please provide a phrase! Use `!continue <phrase>` to continue a phrase. Thank you!");
+        return;
+      } else {
+        let phrase = args.join(" ");
+        phrase = phrase.slice(0, phrase.length);
+        if (phrase.length > 200) {
+          await message.channel.send("Your phrase is too long! Please use a shorter one.");
+          return;
+        } else {
+          const fetch = require('node-fetch')
+
+          async function query(data) {
+            const response = await fetch(
+              "https://api-inference.huggingface.co/models/gpt2",
+              {
+                headers: { Authorization: "Bearer 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" },
+                method: "POST",
+                body: JSON.stringify(data),
+              }
+            );
+            const result = await response.json();
+            return result;
+          }
+
+          query({"inputs": phrase}).then((response) => {
+            console.log(JSON.stringify(response));
+          });
+        }
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+});
 
 client.on('message', async (message) => {
   if (message.channel.type == "dm") return;
