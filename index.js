@@ -40,21 +40,7 @@ http.createServer(function (req, res) {
 client.setMaxListeners(100);
 
 client.on('guildMemberAdd', async member => {
-  let randomres = Math.floor(Math.random() * 10) + 1;
-  console.log(randomres);
   try {
-    if (randomres == 1) {
-      embed2 = new Discord.MessageEmbed()
-        .setAuthor("Numero", client.user.avatarURL)
-        .setTitle(`Welcome to ${member.guild.name}!`)
-        .setDescription("Welcome to " + member.guild.name + ", " + `<@${member.id}>` + "!" + "\n\nPlease read the rules and enjoy your stay!")
-        .setColor("#FFFFFF")
-        .setThumbnail(member.user.displayAvatarURL())
-        .addField('Make sure to follow the Discord TOS!","[Click here to read](https://discord.com/terms)')
-        .addField("Here a surprise for you!!", "[Click here to see](https://www.youtube.com/watch?v=z1e1m9dE0UI&ab_channel=Aluzions)")
-        .setFooter("Automated message, please do not reply!");
-      await member.send(embed2);
-    } else if (randomres == 2) {
       embed = new Discord.MessageEmbed()
         .setAuthor("Numero")
         .setTitle(`Welcome to ${member.guild.name}!`)
@@ -64,25 +50,6 @@ client.on('guildMemberAdd', async member => {
         .addField("Make sure to follow the Discord TOS!", "[Click here to read](https://discord.com/terms)")
         .setFooter("Automated message, please do not reply!");
       await member.send(embed);
-    } else if (randomres == 3) {
-      embed = new Discord.MessageEmbed()
-        .setAuthor("Shrek")
-        .setTitle(`Welcome to Shrek's Swamp!`)
-        .setDescription("Welcome to my swamp, " + `<@${member.id}>` + "!" + "\n\nPlease read the rules and enjoy your stay!")
-        .setColor("#FFFFFF")
-        .setThumbnail('https://www.gamespot.com/a/uploads/screen_kubrick/1179/11799911/3807415-screenshot2021-03-12at3.13.21pm.png')
-        .setFooter("Wait, what? You're not supposed to be here! GET OFF MY SWOMP!");
-      await member.send(embed);
-    } else {
-      embed = new Discord.MessageEmbed()
-        .setAuthor("Numero")
-        .setTitle(`Welcome to ${member.guild.name}!`)
-        .setDescription("Welcome to " + member.guild.name + " " + `<@${member.id}>` + "!" + "\n\nPlease read the rules and enjoy your stay!")
-        .setColor("#FFFFFF")
-        .setThumbnail(member.user.displayAvatarURL())
-        .addField("Make sure to follow the Discord TOS!", "[Click here to read](https://discord.com/terms)")
-        .setFooter("Automated message, please do not reply!");
-    }
   } catch (error) {
     console.log("Error sending message: " + error);
 
@@ -764,7 +731,7 @@ client.on('message', async (message) => {
             .setDescription(suggestion)
             .setAuthor(message.author.tag, message.author.displayAvatarURL())
             .setFooter("Suggested by " + `${message.author.username}`);
-          await client.channels.cache.get("1086015693276860606").send(suggestionEmbed);
+          await client.channels.cache.get("1108871515740573868").send(suggestionEmbed);
           await message.channel.send("Your suggestion has been sent to the developers! Thank you!");
           await message.react("🎉");
         }
@@ -838,7 +805,6 @@ client.on('message', async (message) => {
             blacklisted.push(message.author.id);
             plercont--;
             playersingame.splice(playersingame.indexOf(message.author.id), 1);
-            console.log(playersingame);
           }
         }
       } catch (error) {
