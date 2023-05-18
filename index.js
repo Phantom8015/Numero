@@ -671,7 +671,7 @@ client.on('message', async (message) => {
       .setColor("#FFFFFF")
       .setDescription("All usable commands")
       .addField(prefix + "help", "Shows this message")
-      .addField(prefix + "continue", "Continues a phrase using AI")
+      .addField(prefix + "continai", "Continues a phrase using AI (May occasionally be NSFW)")
       .addField(prefix + "generate", "Generates an image based off of a prompt.")
       .addField(prefix + "start <difficulty>", "Starts the game")
       .addField(prefix + "guess <number>", "Guesses the number")
@@ -680,6 +680,7 @@ client.on('message', async (message) => {
       .addField(prefix + "botinfo", "Displays The Amount of users in the server")
       .addField(prefix + "userinfo", "Displays The Info of the user")
       .addField(prefix + "serverinfo", "Displays The Info of the server")
+      .addField(prefix + "nuke", "Don't worry, it's not what you think it is, it just resets the messages in the channel")
       .addField(prefix + "suggest <suggestion>", "Suggests something to the server")
       .setFooter(`${prefix}hamburger`);
     try {
@@ -693,8 +694,8 @@ client.on('message', async (message) => {
 client.on('message', async (message) => {
   if (message.channel.type == "dm") return;
   if (message.author.bot) return;
-  if (message.content.toLowerCase().startsWith(prefix + 'continue') || message.content.toLowerCase().startsWith('/continue')) {
-    let args = message.content.toLowerCase().split(" ").slice(1);
+  if (message.content.toLowerCase().startsWith(prefix + 'continai') || message.content.toLowerCase().startsWith('/continai')) {
+    let args = message.content.split(" ").slice(1);
     try {
       if (args.length == 0) {
         await message.channel.send("Please provide a phrase! Use `!continue <phrase>` to continue a phrase. Thank you!");
@@ -720,11 +721,16 @@ client.on('message', async (message) => {
           }
 
           query({"inputs": phrase}).then((response) => {
+            response = JSON.stringify(response)
+            response = JSON.parse(response)
+            response = response[0].generated_text
+            response = response.slice(0, response.length - 1)
+
             const embed = new Discord.MessageEmbed()
-              .setTitle("AI Response")
+              .setTitle("AI Response ✨")
               .setColor("#FFFFFF")
               .addField("Input", phrase)
-              .setDescription(JSON.stringify(response))
+              .setDescription(response)
               .setFooter("AI");
             message.channel.send(embed);
           });
