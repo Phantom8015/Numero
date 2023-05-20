@@ -30,6 +30,7 @@ function print(string) {
 }
 
 var http = require('http');
+const { time } = require('console');
 
 http.createServer(function (req, res) {   
   res.write("Bot Running");   
@@ -77,8 +78,8 @@ client.on('guildMemberRemove', async member => {
 
 client.on('ready', () => {
   console.log('Logged in as ' + client.user.tag);
-  let activities = [`${prefix}start`, `${prefix}help`, `${prefix}generate`   ],i = 0;
-  setInterval(() => client.user.setActivity(`${activities[i++ %  activities.length]}`,          {type:"STREAMING",url:"https://www.twitch.com"  }), 5000)
+  let activities = [`${prefix}start`, `${prefix}help`, `${prefix}generate`, `${prefix}continai`   ],i = 0;
+  setInterval(() => client.user.setActivity(`${activities[i++ %  activities.length]}`,          {type:"STREAMING",url:"https://www.twitch.com"  }, console.log(moment().format("HH:MM:SS"))), 5000)
 });
 
 client.on('message', async (message) => {
@@ -674,17 +675,26 @@ client.on('message', async (message) => {
           await message.channel.send("Your phrase is too long! Please use a shorter one.");
           return;
         } else {
+          await message.channel.send("Generating response... (This may take a while)")
           async function query(data) {
-            const response = await fetch(
-              "https://api-inference.huggingface.co/models/gpt2-xl",
-              {
-                headers: { Authorization: "Bearer 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" },
-                method: "POST",
-                body: JSON.stringify(data),
-              }
-            );
-            const result = await response.json();
-            return result;
+            try {
+              let bearertoken = process.env.HUGGINGFACE_TOKEN
+              const response = await fetch(
+                "https://api-inference.huggingface.co/models/gpt2",
+                {
+                  headers: { Authorization: `Bearer ${bearertoken}` },
+                  method: "POST",
+                  body: JSON.stringify(data),
+                }
+              );
+              const result = await response.json();
+              console.log(result);
+              return result;
+            } catch (err) {
+              console.log(err);
+              await message.channel.send("An error occured! Please try again later.");
+              return;
+            }
           }
 
           query({"inputs": phrase}).then((response) => {
@@ -698,8 +708,8 @@ client.on('message', async (message) => {
               .setColor("#FFFFFF")
               .addField("Input", phrase)
               .setDescription(response)
-              .setFooter("AI");
-            message.channel.send(embed);
+              .setFooter("Output may be cut off");
+            message.channel.send("<@" + message.author.id + ">", embed);
           });
         }
       }
