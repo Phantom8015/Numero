@@ -40,7 +40,7 @@ Numero is a fun and interactive Discord bot that provides AI-powered features, n
 
 1. **Clone the repository**
    ```sh
-   git clone https://github.com/your-repo/numero.git
+   git clone https://github.com/Phantom8015/numero.git
    cd numero
    ```
 2. **Install dependencies**
