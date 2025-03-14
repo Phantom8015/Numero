@@ -187,25 +187,6 @@ function numero() {
 
 client.on('message', async (message) => {
   if (message.author.bot) return;
-  if (message.content.toLowerCase().startsWith(prefix + 'debug') || message.content.toLowerCase().startsWith('/debug')) {
-    try {
-      if (gameStart[message.channel.id] == true) {
-      
-        if (message.member.id == "792509241901842523" || message.member.id == "1058774225801990264" || message.member.id == "837400983243456594") {
-          hintsUsed = 10;
-          await message.member.send("Psst... number is " + number[message.channel.id] + " 🤫");
-        }
-      } else {
-        return;
-      }
-    } catch (error) {
-      console.log("Error sending message: " + error);
-    }
-  }
-});
-
-client.on('message', async (message) => {
-  if (message.author.bot) return;
   if (message.content.toLowerCase().startsWith(prefix + 'hamburger') || message.content.toLowerCase().startsWith('/hamburger')) {
     try {
       await message.reply("hamburger. 🍔")
@@ -334,70 +315,6 @@ client.on('message', async (message) => {
       }
     } catch (error) {
       console.log("Error sending message: " + error);
-    }
-  }
-});
-
-client.on('message', async (message) => {
-  if (message.author.bot) return;
-  if (message.channel.type == "dm") return;
-  if (message.content.toLowerCase().startsWith(prefix + 'pushupdate') || message.content.toLowerCase().startsWith('/pushupdate')) {
-    if (message.author.id == "792509241901842523", "1108626644249354240") {
-      try {
-        message.channel.send("What is the title of the update?");
-        const title = await message.channel.awaitMessages(m => m.author.id == message.author.id, {
-          max: 1
-        }).then(collected => collected.first().content);
-        message.channel.send("What is the description of the update?");
-        const description = await message.channel.awaitMessages(m => m.author.id == message.author.id, {
-          max: 1
-        }).then(collected => collected.first().content);
-        message.channel.send("What is the footer of the update?");
-        const footer = await message.channel.awaitMessages(m => m.author.id == message.author.id, {
-          max: 1
-        }).then(collected => collected.first().content);
-        message.channel.send("How many fields are there?");
-
-        const fieldCount = await message.channel.awaitMessages(m => m.author.id == message.author.id, {
-          max: 1
-        }).then(collected => collected.first().content);
-
-        let fieldNames = [];
-        let fieldValues = [];
-
-        for (let i = 0; i < fieldCount; i++) {
-          message.channel.send("What is the name of field " + (i + 1) + "?");
-          const fieldName = await message.channel.awaitMessages(m => m.author.id == message.author.id, {
-            max: 1
-          }).then(collected => collected.first().content);
-          fieldNames.push(fieldName);
-          message.channel.send("What is the value of field " + (i + 1) + "?");
-          const fieldValue = await message.channel.awaitMessages(m => m.author.id == message.author.id, {
-            max: 1
-          }).then(collected => collected.first().content);
-          fieldValues.push(fieldValue);
-        }
-        
-        const updateEmbed = new Discord.MessageEmbed()
-          .setTitle(title)
-          .setDescription(description)
-          .setColor("#FFFFFF")
-          .setFooter(footer)
-
-        for (let i = 0; i < fieldCount; i++) {
-          updateEmbed.addField(fieldNames[i], fieldValues[i]);
-        }
-        client.guilds.cache.forEach(guild => {
-          guild.channels.cache.forEach(channel => {
-              channel.send(updateEmbed).then(() => {
-                setTimeout(() => {}, 200);
-              }
-            );
-          });
-        });
-      } catch (error) {
-        console.log("Error sending message: " + error);
-      }
     }
   }
 });
@@ -535,30 +452,7 @@ client.on('message', async (message) => {
               whitelistedString = whitelisted.join(", ")
               await message.channel.send("An impossible-difficulty game has been started by " + `<@${message.author.id}>` + "! Guess a number between 1 and 1000000000! 😱");
               numero();
-            } else if (args[0] == "phantom" & message.author.id == "792509241901842523") {
-              difficulty[message.channel.id] = "Cakewalk";
-              gameStart[message.channel.id] = true;
-              gameHost.push(message.author.id);
-              console.log(gameHost);
-              channelOfGame.push(message.channel.id);
-              console.log(channelOfGame);
-              number[message.channel.id] = Math.floor(Math.random() * 10) + 1;
-              whitelisted.push(message.author.id)
-              whitelistedString = whitelisted.join(", ")
-              await message.channel.send("Father, I have a feeling you're about to start a game of cakewalk. Guess a number between 1 and 10!");
-              numero();
-            } else if (args[0] == "balmasri" & message.author.id == "1058774225801990264") {
-              difficulty[message.channel.id] = "Impossible";
-              gameStart[message.channel.id] = true;
-              gameHost.push(message.author.id);
-              console.log(gameHost);
-              channelOfGame.push(message.channel.id);
-              console.log(channelOfGame);
-              number[message.channel.id] = Math.floor(Math.random() * 10) + 1;
-              whitelisted.push(message.author.id)
-              whitelistedString = whitelisted.join(", ")
-              await message.channel.send("01111001 01101111 00100000 01100010 01110010 01101111 00100000 01110101 00100000 01110111 01100001 01101110 01101110 01100001 00100000 01110010 01110101 01101110 00100000 01100001 01101110 00100000 01101001 01101101 01110000 01101111 01110011 01110011 01101001 01100010 01101100 01100101 00100000 01100111 01100001 01101101 01100101 00100000 01110010 01110001 00111111 00111111 00111111");
-              numero();
+            
             } else {
 
                 let difficultyChart = new Discord.MessageEmbed()
@@ -594,8 +488,7 @@ client.on('message', async message => {
   if (message.content.toLowerCase().startsWith(prefix + 'nuke' || message.content.toLowerCase().toLocaleLowerCase().startsWith(prefux + 'nuke'))) {
     let args = message.content.toLowerCase().split(" ").slice(1);
     try {
-      if (message.member.hasPermission("MANAGE_MESSAGES") || message.author.id === "946113064196006029" || message.author.id === "792509241901842523") {
-        if (message.author.id == "979837587172782102") return;
+      if (message.member.hasPermission("MANAGE_MESSAGES") ) {
         let reason = args.join(" ");
         reason = reason.slice(0, reason.length)
 
