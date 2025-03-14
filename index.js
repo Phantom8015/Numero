@@ -649,7 +649,6 @@ client.on('message', async (message) => {
       .addField(prefix + "userinfo", "Displays The Info of the user")
       .addField(prefix + "serverinfo", "Displays The Info of the server")
       .addField(prefix + "nuke", "Don't worry, it's not what you think it is, it just resets the messages in the channel")
-      .addField(prefix + "suggest <suggestion>", "Suggests something to the server")
       .setFooter(`${prefix}hamburger`);
     try {
       message.channel.send(Discord.newMessageEmbed);
@@ -715,39 +714,6 @@ client.on('message', async (message) => {
       }
     } catch (err) {
       console.log(err);
-    }
-  }
-});
-
-client.on('message', async (message) => {
-  if (message.channel.type == "dm") return;
-  if (message.author.bot) return;
-  if (message.content.toLowerCase().startsWith(prefix + 'suggest') || message.content.toLowerCase().startsWith('/suggest')) {
-    let args = message.content.toLowerCase().split(" ").slice(1);
-    try {
-      if (args.length == 0) {
-        await message.channel.send("Please provide a suggestion! Use `!suggest <suggestion>` to suggest something. Thank you!");
-        return;
-      } else {
-        let suggestion = args.join(" ");
-        suggestion = suggestion.slice(0, suggestion.length);
-        if (suggestion.length > 200) {
-          await message.channel.send("Your suggestion is too long! Please use a shorter one.");
-          return;
-        } else {
-          const suggestionEmbed = new Discord.MessageEmbed()
-            .setTitle("Suggestion")
-            .setColor("#FFFFFF")
-            .setDescription(suggestion)
-            .setAuthor(message.author.tag, message.author.displayAvatarURL())
-            .setFooter("Suggested by " + `${message.author.username}`);
-          await client.channels.cache.get("1108871515740573868").send(suggestionEmbed);
-          await message.channel.send("Your suggestion has been sent to the developers! Thank you!");
-          await message.react("🎉");
-        }
-      }
-    } catch (error) {
-      console.log(error);
     }
   }
 });
